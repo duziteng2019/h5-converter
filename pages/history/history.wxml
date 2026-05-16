@@ -1,0 +1,80 @@
+<!-- 历史页面 - 多巴胺设计风格统一 -->
+
+<view class="history-container">
+  <!-- 页面头部 - 多巴胺风格 -->
+  <view class="history-header">
+    <view class="header-icon-wrapper">
+      <text class="header-icon">📖</text>
+    </view>
+    <text class="header-title">浏览历史</text>
+    <text class="header-subtitle">记录您访问过的舞厅</text>
+  </view>
+
+  <!-- 历史记录列表 -->
+  <view class="history-list">
+    <view wx:for="{{history}}" wx:key="_id" class="history-item animate-slideInLeft">
+      <view class="item-main">
+        <!-- 图片容器 -->
+        <view class="item-image-container">
+          <image 
+            src="{{item.image}}" 
+            class="item-image" 
+            mode="aspectFill" 
+            lazy-load="true" 
+            binderror="onImageError" 
+            data-index="{{index}}"
+          />
+          <view class="rating-badge" wx:if="{{item.rating}}">
+            ⭐ {{item.rating}}
+          </view>
+        </view>
+        
+        <!-- 内容区域 -->
+        <view class="item-content">
+          <view class="item-title-row">
+            <text class="item-name">{{item.name}}</text>
+            <text class="view-time">{{item.viewTime}}</text>
+          </view>
+          
+          <view class="item-address">
+            <text class="address-icon">📍</text>
+            <text class="address-text">{{item.address}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="item-actions">
+        <button class="detail-btn" bindtap="navigateToDetail" data-id="{{item._id}}">
+          查看详情
+        </button>
+        <button class="delete-btn" bindtap="removeHistory" data-id="{{item._id}}">
+          ✕
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && history.length === 0}}" class="empty-state">
+    <view class="empty-icon-wrapper">
+      <text class="empty-icon">🕒</text>
+    </view>
+    <text class="empty-title">暂无浏览记录</text>
+    <text class="empty-subtitle">去首页发现更多精彩舞厅吧</text>
+    <button class="btn-primary" bindtap="goToIndex">去首页逛逛</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="loading-icon"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar" wx:if="{{history.length > 0}}">
+    <button class="clear-all-btn" bindtap="clearHistory">
+      清空全部历史
+    </button>
+  </view>
+</view>
